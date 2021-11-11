@@ -1,11 +1,12 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-export default function Home() {
+export default function Courses() {
+
   return (
     <Box
-      component="main"
-      sx={{ minHeight: "100vh", display: "grid", placeItems: "center" }}
+    component="main"
+    sx={{ minHeight: "100vh", display: "grid", placeItems: "center" }}
     >
       <Box>
         <Box
@@ -23,9 +24,9 @@ export default function Home() {
             },
           }}
         >
-          <Typography>Hem</Typography>
+          <Typography>Kurser</Typography>
         </Box>
       </Box>
     </Box>
-  );
+  )
 }
