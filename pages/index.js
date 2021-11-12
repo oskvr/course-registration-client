@@ -1,30 +1,27 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-
+import Image from "next/image";
+import Link from "../components/Link";
 export default function Home() {
   return (
     <Box
       component="main"
       sx={{ minHeight: "100vh", display: "grid", placeItems: "center" }}
     >
-      <Box>
-        <Box
-          //Custom CSS inline
-          sx={{
-            padding: "50px",
-            boxShadow: 1,
-            background: "hsl(220, 50%, 50%)",
-            color: "white",
-            transition: "0.2s",
-            "&:hover": {
-              background: "hsl(220, 50%, 40%)",
-              transform: "translateY(-5px)",
-              boxShadow: 10,
-            },
-          }}
-        >
-          <Typography>Hem</Typography>
-        </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h3" fontWeight="light" textAlign="center">
+          Någon titel
+        </Typography>
+        <Image src="/undraw_education.svg" width="400" height="400" alt="" />
+        <Button variant="contained" component={Link} href="/courses">
+          Visa kurser
+        </Button>
       </Box>
     </Box>
   );

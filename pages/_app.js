@@ -1,8 +1,7 @@
 import "../styles/globals.css";
 import Head from "next/head";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import Nav from "../components/Nav"
-
+import Layout from "./_layout";
 const theme = createTheme({
   // Custom theme props
 });
@@ -12,11 +11,12 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <title>Course Registration App</title>
-      </Head>                
+      </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Nav></Nav>    
-        <Component {...pageProps} />       
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </ThemeProvider>
     </>
   );
