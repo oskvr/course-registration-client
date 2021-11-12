@@ -1,10 +1,9 @@
-import "../styles/globals.css";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import Head from "next/head";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import "../styles/globals.css";
+import { theme } from "./_theme";
 import Layout from "./_layout";
-const theme = createTheme({
-  // Custom theme props
-});
+
 function MyApp({ Component, pageProps }) {
   return (
     <>

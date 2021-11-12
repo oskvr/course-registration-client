@@ -1,3 +1,4 @@
+import { CastForEducation, School } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -19,53 +20,65 @@ export default function Navbar() {
     setAnchorEl(null);
   };
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar variant="outlined">
-        <Toolbar>
-          <IconButton
-            id="basic-button"
-            aria-controls="basic-menu"
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+    <AppBar variant="outlined" sx={{ border: "none" }}>
+      <Toolbar>
+        <IconButton
+          id="basic-button"
+          aria-controls="basic-menu"
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClick}
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          sx={{ mr: 2 }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem component={Link} href="/" onClick={handleClose}>
+            Hem
+          </MenuItem>
+          <MenuItem component={Link} href="/courses" onClick={handleClose}>
+            Kurser
+          </MenuItem>
+        </Menu>
+        <Typography
+          component={Link}
+          variant="h5"
+          href="/"
+          color="inherit"
+          sx={{
+            "&:hover": {
+              "& .icon": {
+                transform: "translateX(2px)",
+              },
+            },
+          }}
+        >
+          Superhäftig skola
+          <Box
+            className="icon"
+            component="span"
+            sx={{ transition: "0.2s", display: "inline-block" }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuItem component={Link} href="/" onClick={handleClose}>
-              Hem
-            </MenuItem>
-            <MenuItem component={Link} href="/courses" onClick={handleClose}>
-              Kurser
-            </MenuItem>
-          </Menu>
-          <Typography
-            component={Link}
-            href="/"
-            color="white"
-            variant="h6"
-            sx={{ flexGrow: 1 }}
-          >
-            Superhäftig skola
-          </Typography>
-          <NavLink href="/account/login">Logga in</NavLink>
-          <NavLink href="/account/register">Registrera</NavLink>
-        </Toolbar>
-      </AppBar>
-    </Box>
+            <School />
+          </Box>
+        </Typography>
+        <Box flex="1" />
+        <NavLink href="/account/login">Logga in</NavLink>
+        <NavLink href="/account/register">Registrera</NavLink>
+      </Toolbar>
+    </AppBar>
   );
 }
 
