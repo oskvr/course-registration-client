@@ -3,32 +3,36 @@
         "CourseId": 1, 
         "StartDate": "2020-03-09", 
         "EndDate": "2020-03-09", 
-        "StudyPace": 25, 
-        "Subject": "Javascript", 
+        "StudyPace": 100, 
+        "Subject": "Javascript",
+        "ImgSrc": "https://i1.wp.com/www.hyrobygg.se/wp-content/uploads/2016/03/js-logo.png?fit=500%2C500&ssl=1",  
         "CourseInfo": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Posuere urna nec tincidunt praesent semper feugiat nibh sed." 
     },
     { 
         "CourseId": 2, 
         "StartDate": "2020-03-09", 
         "EndDate": "2020-03-09", 
-        "StudyPace": 75, 
-        "Subject": "HTML", 
+        "StudyPace": 50, 
+        "Subject": "HTML",
+        "ImgSrc": "https://cdn.pixabay.com/photo/2017/08/05/11/16/logo-2582748_640.png", 
         "CourseInfo": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Posuere urna nec tincidunt praesent semper feugiat nibh sed." 
     },
     { 
         "CourseId": 3, 
         "StartDate": "2020-03-09", 
         "EndDate": "2020-03-09", 
-        "StudyPace": 100, 
-        "Subject": "React", 
+        "StudyPace": 75, 
+        "Subject": "React",
+        "ImgSrc": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png",  
         "CourseInfo": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Posuere urna nec tincidunt praesent semper feugiat nibh sed." 
     },
     {
         "CourseId": 4, 
         "StartDate": "2020-03-09", 
         "EndDate": "2020-03-09", 
-        "StudyPace": 50, 
-        "Subject": "Redux", 
+        "StudyPace": 100, 
+        "Subject": "Redux",
+        "ImgSrc": "https://upload.wikimedia.org/wikipedia/commons/4/49/Redux.png",  
         "CourseInfo": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Posuere urna nec tincidunt praesent semper feugiat nibh sed." 
     }
 ]

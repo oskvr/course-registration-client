@@ -22,25 +22,24 @@ export default function Courses() {
   return (
     <Box
       component="main"
-      sx={{ minHeight: "100vh", display: "grid", placeItems: "center" }}
+      sx={{ minHeight: "100vh", display: "grid", placeItems: "center"}}
     >
-      {Mock.map((course, i) => (
-        <Card  key={course.CourseId} sx={{ maxWidth: 360, margin: 2 }}>
+    <Box sx={{display: "flex", flexDirection: "row" }}>
+    {Mock.map((course, i) => (
+        <Card  key={course.CourseId} sx={{ maxWidth: 360, margin: 2, height: "100%"}}>
           <CardHeader
               avatar={
-                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  R
-                </Avatar>
+                <Avatar src={course.ImgSrc}></Avatar>
               }
               title={course.Subject}
               subheader={"Studietakt: " + course.StudyPace + "%"}
             />
           <CardContent>
-              <Typography paragraph>Startdatum:</Typography>
-              <Typography variant="body2" color="text.secondary">{course.StartDate}</Typography>
-              <Typography paragraph>Slutdatum:</Typography>
-              <Typography variant="body2" color="text.secondary">{course.EndDate}</Typography>
-            </CardContent>
+            <Typography>Startdatum:</Typography>
+            <Typography variant="body2" color="text.secondary" marginBottom="10px">{course.StartDate}</Typography>
+            <Typography>Slutdatum:</Typography>
+            <Typography variant="body2" color="text.secondary">{course.EndDate}</Typography>
+          </CardContent>
           <CardActions disableSpacing>
             <Button>Boka</Button>
             <Button onClick={() => handleExpandClick(i)}aria-expanded={expandedId === i}>
@@ -56,6 +55,8 @@ export default function Courses() {
           </Collapse>
         </Card>
       ))}
+    </Box>
+      
     </Box>
   );
 }

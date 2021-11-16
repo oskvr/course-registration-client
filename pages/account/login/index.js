@@ -27,11 +27,10 @@ export default function login() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" sx={{ minHeight: "100vh", display: "grid", placeItems: "center" }}>
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 20,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
