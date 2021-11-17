@@ -1,4 +1,4 @@
-import * as React from "react";
+import {useState} from 'react';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,14 +16,51 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 const theme = createTheme();
 
 export default function login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+
+  const [email,setEmail] = useState('');
+    const [passWord, setPassWord] = useState('');
+
+    const requestBody = {
+      "email": email,
+      "password": passWord
+    };
+
+    const onEmailChanged = (e) => setEmail(e.target.value);
+    const onPassWordChanged = (e) => setPassWord(e.target.value);
+
+  const handleSubmit = async (event) => {
+
+    debugger;
+
+    const res = await fetch('https://localhost:44314/api/auth/login', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
     });
+
+    console.log(res)
+
+    console.log("HEj")
+
+
+    // localStorage.setItem('token', data);
+
+    event.preventDefault();
+    // .then(res => res.text().then(data => {
+    //     // window.localStorage.setItem('token', data.token);
+    //     console.log(data);
+    // }));
+
+    // const data = new FormData(event.currentTarget);
+    // eslint-disable-next-line no-console
+
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
   };
 
   return (
@@ -52,6 +89,8 @@ export default function login() {
             id="email"
             label="Email"
             name="email"
+            value={email}
+            onChange={onEmailChanged}
             autoComplete="email"
             autoFocus
           />
@@ -59,6 +98,8 @@ export default function login() {
             margin="normal"
             required
             fullWidth
+            value={passWord}
+            onChange={onPassWordChanged}
             name="password"
             label="Lösenord"
             type="password"
