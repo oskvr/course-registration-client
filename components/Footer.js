@@ -2,11 +2,9 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Link from "./Link";
-// TODO: Behöver hjälp med att få till icons, får inte det att fungera.
-// Får inte ikoner att fungera som det ska, kan inte ens se vad jag gör, måste liksom använda en codesandbox för att ens se skiten.
-// import InstagramIcon from "@material-ui/icons/Instagram";
-// import FacebookIcon from "@material-ui/icons/Facebook";
-// import TwitterIcon from "@material-ui/icons/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
 
 export default function Footer() {
   return (
@@ -31,7 +29,36 @@ export default function Footer() {
               <Link href="/">Superhäftiga skolans intranät</Link>
             </Box>
           </Grid>
+          <Grid item xs={12} sm={4}>
+            <Box borderBottom={1}>Superhäftig skola</Box>
+            <Box>
+              <Link href="/">Utbildning</Link>
+            </Box>
+            <Box>
+              <Link href="/">Samverkan</Link>
+            </Box>
+            <Box>
+              <Link href="/">Superhäftiga skolans intranät</Link>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Box borderBottom={1}>Kontakt</Box>
+            <Box>
+              <Link href="/">
+                Superhäftiga skolan <br /> Västra Finnbodavägen 4, <br /> 131 30
+                Nacka
+              </Link>
+            </Box>
+            <Box>
+              <Link href="/">
+                <InstagramIcon /> <TwitterIcon /> <FacebookIcon />
+              </Link>
+            </Box>
+          </Grid>
         </Grid>
+        <Box textAlign="center" pt={{ xs: 5, sm: 10 }} pb={{ xs: 5, sm: 0 }}>
+          Superhäftiga Skolan &reg; 2021
+        </Box>
       </Container>
     </Box>
   );
