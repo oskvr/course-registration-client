@@ -27,8 +27,10 @@ export default function SignUp() {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ minHeight: "100vh", display: "grid", placeItems: "center" }}>
-      <CssBaseline />
+    <Container
+      maxWidth="xs"
+      sx={{ minHeight: "70vh", display: "grid", placeItems: "center" }}
+    >
       <Box
         sx={{
           display: "flex",

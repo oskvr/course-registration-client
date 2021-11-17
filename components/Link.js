@@ -9,7 +9,7 @@ import MuiLink from "@mui/material/Link";
 const Link = forwardRef(({ href, as, prefetch, ...props }, ref) => {
   return (
     <NextLink href={href} as={as} prefetch={prefetch} passHref>
-      <MuiLink ref={ref} {...props} />
+      <MuiLink ref={ref} color="inherit" {...props} />
     </NextLink>
   );
 });

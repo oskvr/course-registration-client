@@ -1,12 +1,15 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import Image from "next/image";
 import Link from "../components/Link";
 export default function Home() {
   return (
-    <Box
-      component="main"
-      sx={{ minHeight: "100vh", display: "grid", placeItems: "center" }}
+    <Container
+      sx={{
+        display: "grid",
+        justifyContent: "center",
+        paddingTop: 15,
+      }}
     >
       <Box
         sx={{
@@ -23,6 +26,6 @@ export default function Home() {
           Visa kurser
         </Button>
       </Box>
-    </Box>
+    </Container>
   );
 }
