@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 
 export default function index() {
 
-    // Får göra en seriösare check när jag vet hur vi ska förvara token
+    // Får göra en seriösare check när jag vet hur vi ska spara token
 
     let token = "";
 
