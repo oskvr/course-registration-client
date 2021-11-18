@@ -45,7 +45,7 @@ export default function Footer() {
             <Box borderBottom={1}>Kontakt</Box>
             <Box>
               <Link href="/">
-                Superhäftiga skolan <br /> Västra Finnbodavägen 4, <br /> 131 30
+                Superhäftiga skolan <br /> Västra Finnbodavägen 4 <br /> 131 30
                 Nacka
               </Link>
             </Box>
