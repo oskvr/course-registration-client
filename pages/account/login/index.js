@@ -1,36 +1,33 @@
-import {useState} from 'react';
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Link from "../../../components/Link";
+import Link from "@/components/Link";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-export default function login() {
-
-  const [email,setEmail] = useState('');
-  const [passWord, setPassWord] = useState('');
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [passWord, setPassWord] = useState("");
 
   const requestBody = {
-    "email": email,
-    "password": passWord
+    email: email,
+    password: passWord,
   };
 
   const onEmailChanged = (e) => setEmail(e.target.value);
   const onPassWordChanged = (e) => setPassWord(e.target.value);
 
   const handleSubmit = async (event) => {
-
-    const res = await fetch('https://localhost:44314/api/auth/login', {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
+    const res = await fetch("https://localhost:44314/api/auth/login", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
     });
 
     const data = await res.text();
@@ -39,10 +36,9 @@ export default function login() {
 
     console.log(data);
 
-    localStorage.setItem('token', data);
+    localStorage.setItem("token", data);
 
     event.preventDefault();
-    
   };
 
   return (
