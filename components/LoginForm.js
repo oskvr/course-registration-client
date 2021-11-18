@@ -24,6 +24,8 @@ export default function login() {
 
   const handleSubmit = async (event) => {
 
+    event.preventDefault();
+
     const res = await fetch('https://localhost:44314/api/auth/login', {
         method: 'POST',
         mode: 'cors',
@@ -41,7 +43,8 @@ export default function login() {
 
     localStorage.setItem('token', data);
 
-    event.preventDefault();
+    location.reload();
+
     
   };
 
