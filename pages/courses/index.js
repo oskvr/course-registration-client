@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
+import useEffect from  "react";
 
 async function getCourses (){
   // let courses;
@@ -67,6 +68,31 @@ export default function Courses() {
   
   console.log('courses: ', courses);
 
+  const handleRegistration = (userID, courseID) => {
+
+      const data = {
+        userId: userID,
+        courseId: courseID
+       }
+      
+      const requestOptions = {
+        metohd:'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+       // mode: 'cors',
+       // credentials: 'cross-origin',
+        body: JSON.stringify(data)
+      }
+    
+      fetch('https://localhost:44314/api/User/registerCourse', requestOptions)
+        .then(response => {
+          if(!response.ok){
+            throw new Error('Failed to register')
+          }
+        })
+  };
+
   return (
     <Box sx={{ minHeight: "70vh", display: "grid", placeItems: "center" }}>
       <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
@@ -96,9 +122,9 @@ export default function Courses() {
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <Button>Boka</Button>
+              <Button onClick={() => handleExpandClick(i)} >Boka</Button>
               <Button
-                onClick={() => handleExpandClick(i)}
+                onClick={() => handleRegistration(userid, course.CourseId)}
                 aria-expanded={expandedId === i}
               >
                 Visa Mer
