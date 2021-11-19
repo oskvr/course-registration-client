@@ -129,7 +129,6 @@ function MobileNavbar() {
 function NavLink({ href, children }) {
   const pathname = typeof href === "string" ? href : href.pathname;
   const router = useRouter();
-  console.log(router.pathname);
   return (
     <Link
       href={href}
