@@ -8,8 +8,20 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import GoogleLogin from 'react-google-login';
+import { Divider } from "@mui/material";
 
 export default function login() {
+
+  const handleSucces = (response) => {    
+    console.log("google-respons", response)
+    localStorage.setItem('token', response.tokenId);
+    location.reload();
+  }
+
+  const handleFailure = (response) => {    
+    console.log("google-respons", response)
+  }
 
   const [email,setEmail] = useState('');
   const [passWord, setPassWord] = useState('');
@@ -43,9 +55,7 @@ export default function login() {
 
     localStorage.setItem('token', data);
 
-    location.reload();
-
-    
+    location.reload();  
   };
 
   return (
@@ -107,6 +117,28 @@ export default function login() {
               </Link>
             </Grid>
           </Grid>
+          <Box>
+            <Box display="flex" alignItems="center" paddingY={3}>
+              <Divider sx={{ flex: "1" }} />
+              <Typography
+                component="span"
+                marginX={1}
+                color="text.secondary"
+                sx={{ pointerEvents: "none" }}
+              >
+                eller
+              </Typography>
+              <Divider sx={{ flex: "1" }} />
+            </Box>
+            <GoogleLogin
+                clientId="659087919219-060lh08m0biorqnlaghc26elkvo609oa.apps.googleusercontent.com"
+                buttonText="Login"
+                onSuccess={handleSucces}
+                onFailure={handleFailure}
+                cookiePolicy={'single_host_origin'}>
+                  <span>Logga in med google</span>
+            </GoogleLogin>
+          </Box>
         </Box>
       </Box>
     </Container>
