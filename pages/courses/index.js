@@ -12,6 +12,7 @@ import { red } from "@mui/material/colors";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 import useEffect from  "react";
+<<<<<<< HEAD
 
 async function getCourses (){
   // let courses;
@@ -48,6 +49,8 @@ async function getCourses (){
     }
     return data;
 }
+=======
+>>>>>>> 12e23fa91931c745efab32079d25df9ba388d0ce
 
 export default function Courses() {
   const [expandedId, setExpandedId] = React.useState(-1);
@@ -67,6 +70,31 @@ export default function Courses() {
   }, []);
   
   console.log('courses: ', courses);
+
+  const handleRegistration = (userID, courseID) => {
+
+      const data = {
+        userId: userID,
+        courseId: courseID
+       }
+      
+      const requestOptions = {
+        metohd:'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+       // mode: 'cors',
+       // credentials: 'cross-origin',
+        body: JSON.stringify(data)
+      }
+    
+      fetch('https://localhost:44314/api/User/registerCourse', requestOptions)
+        .then(response => {
+          if(!response.ok){
+            throw new Error('Failed to register')
+          }
+        })
+  };
 
   const handleRegistration = (userID, courseID) => {
 
@@ -118,7 +146,11 @@ export default function Courses() {
               </Typography>
               <Typography>Slutdatum:</Typography>
               <Typography variant="body2" color="text.secondary">
+<<<<<<< HEAD
                 {new Date(course.endDate).toLocaleDateString('sv-SE')}
+=======
+                {course}
+>>>>>>> 12e23fa91931c745efab32079d25df9ba388d0ce
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
