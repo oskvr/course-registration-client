@@ -41,7 +41,12 @@ function useNavbar() {
 function DesktopNavbar() {
   const { isLoggedIn, handleLogout } = useNavbar();
   return (
-    <AppBar variant="outlined" position="relative" sx={{ border: "none" }}>
+    <AppBar
+      variant="outlined"
+      elevation={0}
+      position="relative"
+      sx={{ border: "none" }}
+    >
       <Toolbar>
         <SiteLogo />
         <NavLink href="/">Hem</NavLink>

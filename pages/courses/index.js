@@ -112,7 +112,6 @@ export default function Courses() {
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <Button onClick={() => handleExpandClick(i)}>Boka</Button>
               <Button
                 onClick={() => handleRegistration(1, 1)} //hårdkodat just nu!
                 aria-expanded={expandedId === i}
