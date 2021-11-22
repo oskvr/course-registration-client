@@ -10,9 +10,11 @@ import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
+import { useAuth } from "@/lib/auth";
+import { useRouter } from "next/router";
+import { BASE_URL } from "@/lib/api/helpers";
 
 async function getCourses() {
-
   let data;
   try {
     const response = await fetch("https://localhost:44314/api/course", {
@@ -64,7 +66,9 @@ const handleRegistration = (userID, courseID) => {
 };
 export default function Courses() {
   const [expandedId, setExpandedId] = useState(-1);
-
+  const [registration, setRegistration] = useState({});
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
   const handleExpandClick = (i) => {
     setExpandedId(expandedId === i ? -1 : i);
   };
@@ -112,8 +116,16 @@ export default function Courses() {
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <Button
+            <Button
                 onClick={() => handleRegistration(1, 1)} //hårdkodat just nu!
+
+                variant="contained"
+                onClick={() => handleRegistration(course.courseId)}
+              >
+                Boka
+              </Button>
+              <Button
+                onClick={() => handleExpandClick(i)}
                 aria-expanded={expandedId === i}
               >
                 Visa Mer
@@ -127,7 +139,7 @@ export default function Courses() {
             >
               <CardContent>
                 <Typography paragraph>Information</Typography>
-                <Typography paragraph>{course.CourseInfo}</Typography>
+                <Typography paragraph>{course.courseInfo}</Typography>
               </CardContent>
             </Collapse>
           </Card>
