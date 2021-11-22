@@ -10,9 +10,11 @@ import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
+import { useAuth } from "@/lib/auth";
+import { useRouter } from "next/router";
+import { BASE_URL } from "@/lib/api/helpers";
 
 async function getCourses() {
-
   let data;
   try {
     const response = await fetch("https://localhost:44314/api/course", {
@@ -28,27 +30,28 @@ async function getCourses() {
   }
   return data;
 }
-async function postRegistration(){
-  let data;
-  try{
-    const response = await fetch(BASE_URL+"/User/RegisterCourse", {
+async function postRegistration({ userId, courseId }) {
+  try {
+    const response = await fetch(BASE_URL + "/User/RegisterCourse", {
       method: "POST",
       mode: "cors",
       headers: {
         "content-type": "application/json",
       },
+      body: JSON.stringify({ userId, courseId }),
     });
-    data = await response.json();
-  }
-  catch(epicFail)
-  {
+    const data = await response.json();
+    return data;
+  } catch (epicFail) {
     console.log(epicFail.Message);
   }
 }
 
 export default function Courses() {
   const [expandedId, setExpandedId] = useState(-1);
-
+  const [registration, setRegistration] = useState({});
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
   const handleExpandClick = (i) => {
     setExpandedId(expandedId === i ? -1 : i);
   };
@@ -64,21 +67,19 @@ export default function Courses() {
   }, []);
 
   console.log("courses: ", courses);
-  const [registration, setRegistration] = useState({});
-  const handleRegistration = (userID, courseID) => {
+  const handleRegistration = async (courseID) => {
+    // Redirect till login-sidan om man försöker anmäla sig utan att vara inloggad
+    if (!isLoggedIn) {
+      router.push("/account/login");
+      return;
+    }
     const data = {
-      userId: userID,
+      userId: 1, // TODO: temporär userId. Borde komma från user.userId i useAuth istället
       courseId: courseID,
     };
-    useEffect(() => {
-      const registration = async() =>{
-        const reg = await postRegistration(data);
-        console.log("reg: ", reg);
-        setRegistration(reg);
-      };
-      registration();
-    }, {});
-
+    const reg = await postRegistration(data);
+    console.log("reg: ", reg);
+    setRegistration(reg);
   };
 
   return (
@@ -110,9 +111,14 @@ export default function Courses() {
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
-              <Button onClick={() => handleExpandClick(i)}>Boka</Button>
               <Button
-                onClick={() => handleRegistration(userid, course.courseId)}
+                variant="contained"
+                onClick={() => handleRegistration(course.courseId)}
+              >
+                Boka
+              </Button>
+              <Button
+                onClick={() => handleExpandClick(i)}
                 aria-expanded={expandedId === i}
               >
                 Visa Mer
@@ -126,7 +132,7 @@ export default function Courses() {
             >
               <CardContent>
                 <Typography paragraph>Information</Typography>
-                <Typography paragraph>{course.CourseInfo}</Typography>
+                <Typography paragraph>{course.courseInfo}</Typography>
               </CardContent>
             </Collapse>
           </Card>
