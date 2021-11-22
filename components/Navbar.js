@@ -2,6 +2,7 @@ import { CastForEducation, School } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  Button,
   Drawer,
   Fade,
   List,
@@ -20,56 +21,63 @@ import { useRouter } from "next/dist/client/router";
 import * as React from "react";
 import Link from "./Link";
 import NextLink from "next/link";
-
-let linkId = 0;
-const LEFT_LINKS = [
-  { id: linkId++, href: "/", text: "Hem" },
-  { id: linkId++, href: "/courses", text: "Kurser" },
-];
-
-const RIGHT_LINKS = [
-  { id: linkId++, href: "/account/login", text: "Logga in" },
-  { id: linkId++, href: "/account/register", text: "Registrera" },
-];
-
-const ALL_LINKS = LEFT_LINKS.concat(RIGHT_LINKS);
+import { useAuth } from "@/lib/auth";
 
 export default function Navbar() {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.up("md"));
-  return (
-    <>
-      <Box hidden={isMobile}>
-        <MobileNavbar />
-      </Box>
-      <Box hidden={!isMobile}>
-        <DesktopNavbar />
-      </Box>
-    </>
-  );
+  const { isMobile } = useNavbar();
+  return isMobile ? <MobileNavbar /> : <DesktopNavbar />;
 }
+function useNavbar() {
+  const { onLogout, isLoggedIn } = useAuth();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const router = useRouter();
+  function handleLogout() {
+    onLogout();
+    router.push("/");
+  }
 
+  return { handleLogout, isLoggedIn, isMobile };
+}
 function DesktopNavbar() {
+  const { isLoggedIn, handleLogout } = useNavbar();
   return (
     <AppBar variant="outlined" position="relative" sx={{ border: "none" }}>
       <Toolbar>
         <SiteLogo />
-        {LEFT_LINKS.map((link) => (
-          <NavLink href={link.href} key={link.id}>
-            {link.text}
-          </NavLink>
-        ))}
+        <NavLink href="/">Hem</NavLink>
+        <NavLink href="/courses">Kurser</NavLink>
         <Box flex="1" />
-        {RIGHT_LINKS.map((link) => (
-          <NavLink href={link.href} key={link.id}>
-            {link.text}
-          </NavLink>
-        ))}
+        {isLoggedIn ? (
+          <>
+            <NavLink href="/account">Mitt konto</NavLink>
+            <Button variant="text" color="inherit" onClick={handleLogout}>
+              Logga ut
+            </Button>
+          </>
+        ) : (
+          <>
+            <NavLink href="/account/login">Logga in</NavLink>
+            <NavLink href="/account/register">Registrera</NavLink>
+          </>
+        )}
       </Toolbar>
     </AppBar>
   );
 }
 function MobileNavbar() {
   const [showMenu, setShowMenu] = React.useState(false);
+  const { isLoggedIn, handleLogout } = useNavbar();
+  function ListLink({ href, text }) {
+    return (
+      <ListItem disablePadding>
+        <NextLink href={href}>
+          <ListItemButton onClick={() => setShowMenu(false)}>
+            {text}
+          </ListItemButton>
+        </NextLink>
+      </ListItem>
+    );
+  }
   return (
     <>
       <AppBar variant="outlined" position="relative" sx={{ border: "none" }}>
@@ -95,30 +103,40 @@ function MobileNavbar() {
         unmountOnExit
         sx={{
           position: "absolute",
-          top: "50",
+          top: "62px",
           left: "0",
           height: "95vh",
           width: "100%",
           background: "white",
           zIndex: "9999",
-          display: { base: "block", md: "none" },
+          display: { md: "none" },
         }}
         in={showMenu}
       >
         <Box backgroundColor="white">
           <List>
-            {ALL_LINKS.map((link) => (
-              <ListItem key={link.id} disablePadding>
-                <NextLink href={link.href}>
+            <ListLink href="/" text="Hem" />
+            <ListLink href="/courses" text="Kurser" />
+            {isLoggedIn ? (
+              <>
+                <ListLink href="/account" text="Mitt konto" />
+                <ListItem disablePadding>
                   <ListItemButton
-                    sx={{ fontSize: 18 }}
-                    onClick={() => setShowMenu(false)}
+                    onClick={() => {
+                      handleLogout();
+                      setShowMenu(false);
+                    }}
                   >
-                    {link.text}
+                    Logga ut
                   </ListItemButton>
-                </NextLink>
-              </ListItem>
-            ))}
+                </ListItem>
+              </>
+            ) : (
+              <>
+                <ListLink href="/account/login" text="Logga in" />
+                <ListLink href="/account/register" text="Registrera" />
+              </>
+            )}
           </List>
         </Box>
       </Fade>
