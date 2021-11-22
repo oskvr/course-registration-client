@@ -8,16 +8,24 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { GoogleLogin } from "react-google-login";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BASE_URL } from "@/lib/api/helpers";
 import { Divider } from "@mui/material";
 import { useRouter } from "next/router";
+import { useAuth } from "@/lib/auth";
 export default function SignUp() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { isLoggedIn } = useAuth();
   const router = useRouter();
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn]);
   async function handleSubmit(e) {
     e.preventDefault();
     const res = await registerUserAsync(firstName, lastName, email, password);
