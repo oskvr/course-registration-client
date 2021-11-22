@@ -49,7 +49,7 @@ function DesktopNavbar() {
         <Box flex="1" />
         {isLoggedIn ? (
           <>
-            <NavLink href="account/profile">Mitt konto</NavLink>
+            <NavLink href="/account">Mitt konto</NavLink>
             <Button variant="text" color="inherit" onClick={handleLogout}>
               Logga ut
             </Button>
@@ -119,7 +119,7 @@ function MobileNavbar() {
             <ListLink href="/courses" text="Kurser" />
             {isLoggedIn ? (
               <>
-                <ListLink href="/account/profile" text="Mitt konto" />
+                <ListLink href="/account" text="Mitt konto" />
                 <ListItem disablePadding>
                   <ListItemButton
                     onClick={() => {
