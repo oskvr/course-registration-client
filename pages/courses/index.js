@@ -28,24 +28,40 @@ async function getCourses() {
   }
   return data;
 }
-async function postRegistration(){
-  let data;
+async function postRegistration(data){
+  
+  console.log("postreg data: ", data);
   try{
-    const response = await fetch(BASE_URL+"/User/RegisterCourse", {
+    console.log("try");
+    const response = await fetch("https://localhost:44314/api/User/RegisterCourse", {
       method: "POST",
       mode: "cors",
       headers: {
         "content-type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
       },
+      body: JSON.stringify(data),
     });
-    data = await response.json();
+    console.log("postregistration response: ", response);
+    
   }
   catch(epicFail)
   {
-    console.log(epicFail.Message);
+    console.log("error!", epicFail.message);
   }
 }
+const handleRegistration = (userID, courseID) => {
 
+  let data ={
+    userId: userID,
+    courseId: courseID,
+    
+  };
+  console.log("handleregistration-data: ", data);
+  postRegistration(data);
+      
+
+};
 export default function Courses() {
   const [expandedId, setExpandedId] = useState(-1);
 
@@ -64,22 +80,8 @@ export default function Courses() {
   }, []);
 
   console.log("courses: ", courses);
-  const [registration, setRegistration] = useState({});
-  const handleRegistration = (userID, courseID) => {
-    const data = {
-      userId: userID,
-      courseId: courseID,
-    };
-    useEffect(() => {
-      const registration = async() =>{
-        const reg = await postRegistration(data);
-        console.log("reg: ", reg);
-        setRegistration(reg);
-      };
-      registration();
-    }, {});
-
-  };
+ 
+  
 
   return (
     <Box sx={{ minHeight: "70vh", display: "grid", placeItems: "center" }}>
@@ -112,7 +114,7 @@ export default function Courses() {
             <CardActions disableSpacing>
               <Button onClick={() => handleExpandClick(i)}>Boka</Button>
               <Button
-                onClick={() => handleRegistration(userid, course.courseId)}
+                onClick={() => handleRegistration(1, 1)} //hårdkodat just nu!
                 aria-expanded={expandedId === i}
               >
                 Visa Mer
