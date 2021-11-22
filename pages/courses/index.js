@@ -12,21 +12,6 @@ import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 
 async function getCourses() {
-  // let courses;
-  // fetch('https://localhost:44314/api/course', {
-  //   method: 'GET',
-  //   mode: 'cors',
-  //   headers: {
-  //       'content-type': 'application/json'
-  //   }})
-  //   .then((res) =>
-  //   {console.log('response: ', res),
-  //     res.json().then((jsonData) =>
-  //     courses= {jsonData})
-  //   }).catch((epicFail)=>console.error(epicFail));
-
-  // console.log('courses: ', courses)
-  //     return courses;
 
   let data;
   try {
@@ -42,6 +27,23 @@ async function getCourses() {
     console.log(epicFail.message);
   }
   return data;
+}
+async function postRegistration(){
+  let data;
+  try{
+    const response = await fetch(BASE_URL+"/User/RegisterCourse", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    data = await response.json();
+  }
+  catch(epicFail)
+  {
+    console.log(epicFail.Message);
+  }
 }
 
 export default function Courses() {
@@ -62,31 +64,21 @@ export default function Courses() {
   }, []);
 
   console.log("courses: ", courses);
-
+  const [registration, setRegistration] = useState({});
   const handleRegistration = (userID, courseID) => {
     const data = {
       userId: userID,
       courseId: courseID,
     };
+    useEffect(() => {
+      const registration = async() =>{
+        const reg = await postRegistration(data);
+        console.log("reg: ", reg);
+        setRegistration(reg);
+      };
+      registration();
+    }, {});
 
-    const requestOptions = {
-      metohd: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // mode: 'cors',
-      // credentials: 'cross-origin',
-      body: JSON.stringify(data),
-    };
-
-    fetch(
-      "https://localhost:44314/api/User/registerCourse",
-      requestOptions
-    ).then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to register");
-      }
-    });
   };
 
   return (
@@ -98,7 +90,7 @@ export default function Courses() {
             sx={{ maxWidth: 360, margin: 2, height: "100%" }}
           >
             <CardHeader
-              //avatar={<Avatar src={course.ImgSrc}></Avatar>}
+              avatar={<Avatar src={course.imageSrc}></Avatar>}
               title={course.subject}
               titleTypographyProps={{ fontSize: 18 }}
               subheader={"Studietakt: " + course.studyPace + "%"}
@@ -120,7 +112,7 @@ export default function Courses() {
             <CardActions disableSpacing>
               <Button onClick={() => handleExpandClick(i)}>Boka</Button>
               <Button
-                onClick={() => handleRegistration(userid, course.CourseId)}
+                onClick={() => handleRegistration(userid, course.courseId)}
                 aria-expanded={expandedId === i}
               >
                 Visa Mer
