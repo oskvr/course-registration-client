@@ -117,8 +117,8 @@ export default function Courses() {
             </CardContent>
             <CardActions disableSpacing>
             <Button
-                onClick={() => handleRegistration(1, 1)} //hårdkodat just nu!
-
+                onClick={() => handleRegistration(-1, course.courseId)} //värdet för userId behövs inte, utan 
+                                                                        //går att extrahera från token i api:et.
                 variant="contained"
                 onClick={() => handleRegistration(course.courseId)}
               >
