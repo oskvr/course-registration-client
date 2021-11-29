@@ -17,6 +17,8 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import Avatar from '@mui/material/Avatar';
+import { deepPurple } from '@mui/material/colors';
 import { useRouter } from "next/dist/client/router";
 import * as React from "react";
 import Link from "./Link";
@@ -28,7 +30,7 @@ export default function Navbar() {
   return isMobile ? <MobileNavbar /> : <DesktopNavbar />;
 }
 function useNavbar() {
-  const { onLogout, isLoggedIn } = useAuth();
+  const { onLogout, isLoggedIn, user } = useAuth();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const router = useRouter();
   function handleLogout() {
@@ -36,10 +38,11 @@ function useNavbar() {
     router.push("/");
   }
 
-  return { handleLogout, isLoggedIn, isMobile };
+  return { handleLogout, isLoggedIn, isMobile, user};
 }
 function DesktopNavbar() {
-  const { isLoggedIn, handleLogout } = useNavbar();
+  // const { user } = useAuth();
+  const { isLoggedIn, handleLogout, user } = useNavbar();
   return (
     <AppBar
       variant="outlined"
@@ -54,6 +57,9 @@ function DesktopNavbar() {
         <Box flex="1" />
         {isLoggedIn ? (
           <>
+            <Avatar sx={{ bgcolor: deepPurple[500] }}>
+              {user? user.firstName.charAt(0) : ""}{user?  user.lastName.charAt(0) : ""}
+            </Avatar>
             <NavLink href="/account">Mitt konto</NavLink>
             <Button variant="text" color="inherit" onClick={handleLogout}>
               Logga ut
@@ -123,7 +129,7 @@ function MobileNavbar() {
             <ListLink href="/" text="Hem" />
             <ListLink href="/courses" text="Kurser" />
             {isLoggedIn ? (
-              <>
+              <>                
                 <ListLink href="/account" text="Mitt konto" />
                 <ListItem disablePadding>
                   <ListItemButton

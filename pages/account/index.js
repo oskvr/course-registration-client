@@ -14,6 +14,22 @@ import Mock from '../../mock/mockCourses'
 
 export default function Home() {
 
+  // async function GetCourses() {
+
+  //   console.log(localStorage.getItem("token"))
+    
+  //   const response = await fetch("https://localhost:44314/api/User/CoursesForUser", {
+  //       method: "GET",
+  //       mode: "cors",
+  //       headers: {
+  //         "content-type": "application/json",
+  //         "Authorization": `Bearer ${localStorage.getItem("token")}`
+  //       },
+  //     });
+
+  //   console.log(response);
+  // }
+
   return (
     <Container
       sx={{
