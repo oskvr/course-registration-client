@@ -1,4 +1,4 @@
-import { CastForEducation, School } from "@mui/icons-material";
+import School from "@mui/icons-material/School";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -13,14 +13,11 @@ import {
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Avatar from '@mui/material/Avatar';
 import { deepPurple } from '@mui/material/colors';
 import { useRouter } from "next/dist/client/router";
-import * as React from "react";
 import Link from "./Link";
 import NextLink from "next/link";
 import { useAuth } from "@/lib/auth";

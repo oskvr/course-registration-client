@@ -31,7 +31,7 @@ async function getCourses() {
   return data;
 }
 async function postRegistration(data){
-  
+  console.log("postRegistration localstorage-token", window.localStorage.getItem("token"));
   console.log("postreg data: ", data);
   try{
     console.log("try");
@@ -40,11 +40,15 @@ async function postRegistration(data){
       mode: "cors",
       headers: {
         "content-type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
+        "Authorization": `Bearer ${window.localStorage.getItem("token")}`
       },
       body: JSON.stringify(data),
     });
-    console.log("postregistration response: ", response);
+    window.localStorage.setItem("token", response.headers.get('NewToken'));
+    // console.log("postregistration response: ", response);
+    // console.log("headers: ", (response) => {     console.log(response.headers.get('NewToken'));     return response.text(); });
+    // console.log("newtoken: ", response.headers.get('NewToken'))
+    console.log("token in storage after fetch: ", window.localStorage.getItem("token"));
     
   }
   catch(epicFail)
@@ -65,6 +69,7 @@ const handleRegistration = (userID, courseID) => {
 
 };
 export default function Courses() {
+  console.log("courses, localstorage-token", window.localStorage.getItem("token"));
   const [expandedId, setExpandedId] = useState(-1);
   const [registration, setRegistration] = useState({});
   const { isLoggedIn } = useAuth();
