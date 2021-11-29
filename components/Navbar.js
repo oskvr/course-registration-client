@@ -15,12 +15,13 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Avatar from '@mui/material/Avatar';
-import { deepPurple } from '@mui/material/colors';
+import Avatar from "@mui/material/Avatar";
+import { deepPurple } from "@mui/material/colors";
 import { useRouter } from "next/dist/client/router";
 import Link from "./Link";
 import NextLink from "next/link";
 import { useAuth } from "@/lib/auth";
+import { useState } from "react";
 
 export default function Navbar() {
   const { isMobile } = useNavbar();
@@ -35,7 +36,7 @@ function useNavbar() {
     router.push("/");
   }
 
-  return { handleLogout, isLoggedIn, isMobile, user};
+  return { handleLogout, isLoggedIn, isMobile, user };
 }
 function DesktopNavbar() {
   // const { user } = useAuth();
@@ -55,7 +56,8 @@ function DesktopNavbar() {
         {isLoggedIn ? (
           <>
             <Avatar sx={{ bgcolor: deepPurple[500] }}>
-              {user? user.firstName.charAt(0) : ""}{user?  user.lastName.charAt(0) : ""}
+              {user ? user.firstName.charAt(0) : ""}
+              {user ? user.lastName.charAt(0) : ""}
             </Avatar>
             <NavLink href="/account">Mitt konto</NavLink>
             <Button variant="text" color="inherit" onClick={handleLogout}>
@@ -73,7 +75,7 @@ function DesktopNavbar() {
   );
 }
 function MobileNavbar() {
-  const [showMenu, setShowMenu] = React.useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const { isLoggedIn, handleLogout } = useNavbar();
   function ListLink({ href, text }) {
     return (
@@ -126,7 +128,7 @@ function MobileNavbar() {
             <ListLink href="/" text="Hem" />
             <ListLink href="/courses" text="Kurser" />
             {isLoggedIn ? (
-              <>                
+              <>
                 <ListLink href="/account" text="Mitt konto" />
                 <ListItem disablePadding>
                   <ListItemButton
