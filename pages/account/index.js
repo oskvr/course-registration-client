@@ -8,14 +8,13 @@ import {
 import { Box } from "@mui/system";
 import Image from "next/image";
 import Link from "@/components/Link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import Mock from "../../mock/mockCourses";
 import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
 
@@ -28,21 +27,28 @@ export default function Home() {
       router.push("/account/login");
     }
   }, [user, router]);
-  // async function GetCourses() {
 
-  //   console.log(localStorage.getItem("token"))
+  const [courses, setCourses] = useState([]);
 
-  //   const response = await fetch("https://localhost:44314/api/User/CoursesForUser", {
-  //       method: "GET",
-  //       mode: "cors",
-  //       headers: {
-  //         "content-type": "application/json",
-  //         "Authorization": `Bearer ${localStorage.getItem("token")}`
-  //       },
-  //     });
+  useEffect(()=>{
+    getCourses();
+  }, [])
 
-  //   console.log(response);
-  // }
+  async function getCourses() {
+    console.log(localStorage.getItem("token"))
+
+    const response = await fetch("https://localhost:44314/api/User/CoursesForUser", {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "content-type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+      });
+
+    var data = await response.json();
+    setCourses(data);
+  }
   if (!user) return null;
   return (
     <Container
@@ -107,14 +113,16 @@ export default function Home() {
       <Typography variant="h3" fontWeight="light" textAlign="start">
         Bokade kurser:
       </Typography>
-      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-        {Mock.map((course, i) => (
-          <ListItem key={course.CourseId} alignItems="flex-start">
+      {
+        courses.length != 0 ? (
+          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+        {courses?.map(({course}, i) => (
+          <ListItem key={course.courseId} alignItems="center" justifyContent="center">
             <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src={course.ImgSrc} />
+              <Avatar alt="Remy Sharp" src={course.imageSrc} />
             </ListItemAvatar>
             <ListItemText
-              primary={course.Subject}
+              primary={course.subject}
               secondary={
                 <>
                   <Typography
@@ -122,16 +130,24 @@ export default function Home() {
                     component="span"
                     variant="body2"
                     color="text.primary"
+                    marginRight="20px"
                   >
-                    {"Från: " + course.StartDate + " till: " + course.EndDate}
+                    {"Från: " + new Date(course.startDate).toLocaleDateString() + " till: " + new Date(course.endDate).toLocaleDateString()}
                   </Typography>
                 </>
               }
             />
-            <Button>Avboka</Button>
+            <Button variant="contained" color="error" >Avboka</Button>
           </ListItem>
         ))}
       </List>
+        ) : (
+          <Typography variant="h5" fontWeight="light" textAlign="start" marginTop="20px"> 
+            Du har inga bokade kurser
+          </Typography>
+        )
+      }
+      
     </Container>
   );
 }

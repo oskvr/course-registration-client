@@ -35,7 +35,7 @@ export default function Home() {
                   height: 100, 
                   width: 100}}
               >
-                {/* {user.firstName.charAt(0) + user.lastName.charAt(0)} */}
+                {/* {user?.firstName.charAt(0) + user?.lastName.charAt(0)} */}
               </Avatar>
               <Typography variant="h4" fontWeight="light" textAlign="center" margin="30px">
                 Du är inloggad som {user? user.firstName : ""} {user?  user.lastName : ""}
