@@ -12,8 +12,8 @@ export default function Footer() {
       component="footer"
       px={{ xs: 3, sm: 10 }}
       py={{ xs: 3, sm: 5 }}
-      bgcolor="text.secondary"
       color="white"
+      marginTop="75px"
     >
       <Container maxWidth="lg">
         <Grid justifyContent="start" container spacing={5}>

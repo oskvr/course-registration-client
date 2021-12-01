@@ -43,6 +43,7 @@ function DesktopNavbar() {
   const { isLoggedIn, handleLogout, user } = useNavbar();
   return (
     <AppBar
+      color="transparent"
       variant="outlined"
       elevation={0}
       position="relative"
