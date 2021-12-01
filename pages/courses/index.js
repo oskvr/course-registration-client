@@ -30,7 +30,7 @@ async function getCourses() {
   }
   return data;
 }
-async function postRegistration(data) {
+async function postRegistration(data, router) {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(BASE_URL + "/User/RegisterCourse", {
@@ -42,17 +42,23 @@ async function postRegistration(data) {
       },
       body: JSON.stringify(data),
     });
+    if(response.status == 403)
+    {
+      console.log("status: ", response.status);
+      
+      router.push('/account/login')
+    }
     localStorage.setItem("token", response.headers.get("NewToken"));
   } catch (epicFail) {
     console.log("error!", epicFail.message);
   }
 }
-const handleRegistration = (userID, courseID) => {
+const handleRegistration = (userID, courseID, router) => {
   let data = {
     userId: userID,
     courseId: courseID,
   };
-  postRegistration(data);
+  postRegistration(data, router);
 };
 export default function Courses() {
   const [expandedId, setExpandedId] = useState(-1);
@@ -96,7 +102,7 @@ export default function Courses() {
             </CardContent>
             <CardActions disableSpacing>
               <Button
-                onClick={() => handleRegistration(-1, course.courseId)} //värdet för userId behövs inte,
+                onClick={() => handleRegistration(-1, course.courseId, router)} //värdet för userId behövs inte,
                 // utan går att extrahera från token i api:et.
                 variant="contained"
               >
