@@ -56,9 +56,9 @@ function DesktopNavbar() {
         <Box flex="1" />
         {isLoggedIn ? (
           <>
-            <Avatar sx={{ bgcolor: deepPurple[500] }}>             
-              {/* {user? user.firstName.charAt(0) : ""}
-              {user? user.lastName.charAt(0) : ""} */}
+            <Avatar sx={{ bgcolor: deepPurple[500] }}>
+              {user?.firstName.charAt(0)}
+              {user?.lastName.charAt(0)}
             </Avatar>
             <NavLink href="/account">Mitt konto</NavLink>
             <Button variant="text" color="inherit" onClick={handleLogout}>

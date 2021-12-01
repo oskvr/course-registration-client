@@ -8,7 +8,7 @@ import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import { Button } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
@@ -42,11 +42,10 @@ async function postRegistration(data, router) {
       },
       body: JSON.stringify(data),
     });
-    if(response.status == 403)
-    {
+    if (response.status == 403) {
       console.log("status: ", response.status);
-      
-      router.push('/account/login')
+
+      router.push("/account/login");
     }
     localStorage.setItem("token", response.headers.get("NewToken"));
   } catch (epicFail) {
@@ -73,62 +72,66 @@ export default function Courses() {
   }, []);
 
   return (
-    <Box sx={{ minHeight: "70vh", display: "grid", placeItems: "center" }}>
-      <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+    <Box sx={{ minHeight: "70vh", pt: 10 }}>
+      <Container>
+        <Typography variant="h3" fontWeight={1}>
+          Våra kurser
+        </Typography>
+      </Container>
+
+      <Grid container p={4} gap={3} justifyContent="center">
         {courses.map((course, i) => (
-          <Card
-            key={course.courseId}
-            sx={{ maxWidth: 360, margin: 2, height: "100%" }}
-          >
-            <CardHeader
-              avatar={<Avatar src={course.imageSrc}></Avatar>}
-              title={course.subject}
-              titleTypographyProps={{ fontSize: 18 }}
-              subheader={"Studietakt: " + course.studyPace + "%"}
-            />
-            <CardContent>
-              <Typography>Startdatum:</Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                marginBottom="10px"
-              >
-                {new Date(course.startDate).toLocaleDateString("sv-SE")}
-              </Typography>
-              <Typography>Slutdatum:</Typography>
-              <Typography variant="body2" color="text.secondary">
-                {new Date(course.endDate).toLocaleDateString("sv-SE")}
-              </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-              <Button
-                onClick={() => handleRegistration(-1, course.courseId, router)} //värdet för userId behövs inte,
-                // utan går att extrahera från token i api:et.
-                variant="contained"
-              >
-                Boka
-              </Button>
-              <Button
-                onClick={() => handleExpandClick(i)}
-                aria-expanded={expandedId === i}
-              >
-                Visa Mer
-              </Button>
-            </CardActions>
-            <Collapse
-              sx={{ maxWidth: "100%" }}
-              in={expandedId === i}
-              timeout="auto"
-              unmountOnExit
+          <Grid item xs={12} md={4} xl={2} key={course.courseId}>
+            <Card
+              sx={{ p: 1, boxShadow: "0 0 0 1px hsla(220, 70%, 70%, 0.3)" }}
             >
+              <CardHeader
+                avatar={<Avatar src={course.imageSrc}></Avatar>}
+                title={course.subject}
+                titleTypographyProps={{ fontSize: 18 }}
+                subheader={"Studietakt: " + course.studyPace + "%"}
+              />
               <CardContent>
-                <Typography paragraph>Information</Typography>
-                <Typography paragraph>{course.courseInfo}</Typography>
+                <Box mb={2}>
+                  <Typography>Startdatum:</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Date(course.startDate).toLocaleDateString("sv-SE")}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography>Slutdatum:</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Date(course.endDate).toLocaleDateString("sv-SE")}
+                  </Typography>
+                </Box>
               </CardContent>
-            </Collapse>
-          </Card>
+              <CardActions disableSpacing>
+                <Button
+                  onClick={() =>
+                    handleRegistration(-1, course.courseId, router)
+                  } //värdet för userId behövs inte,
+                  // utan går att extrahera från token i api:et.
+                  variant="contained"
+                >
+                  Boka
+                </Button>
+                <Button
+                  onClick={() => handleExpandClick(i)}
+                  aria-expanded={expandedId === i}
+                >
+                  Visa mer
+                </Button>
+              </CardActions>
+              <Collapse in={expandedId === i} timeout="auto" unmountOnExit>
+                <CardContent>
+                  <Typography paragraph>Information</Typography>
+                  <Typography paragraph>{course.courseInfo}</Typography>
+                </CardContent>
+              </Collapse>
+            </Card>
+          </Grid>
         ))}
-      </Box>
+      </Grid>
     </Box>
   );
 }

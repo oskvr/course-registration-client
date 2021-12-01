@@ -30,24 +30,26 @@ export default function Home() {
 
   const [courses, setCourses] = useState([]);
 
-  useEffect(()=>{
-    getCourses();
-  }, [])
+  useEffect(() => {
+    getCourses().then(setCourses);
+  }, []);
 
   async function getCourses() {
-    console.log(localStorage.getItem("token"))
+    console.log(localStorage.getItem("token"));
 
-    const response = await fetch("https://localhost:44314/api/User/CoursesForUser", {
+    const response = await fetch(
+      "https://localhost:44314/api/User/CoursesForUser",
+      {
         method: "GET",
         mode: "cors",
         headers: {
           "content-type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      });
+      }
+    );
 
-    var data = await response.json();
-    setCourses(data);
+    return await response.json();
   }
   if (!user) return null;
   return (
@@ -55,6 +57,7 @@ export default function Home() {
       sx={{
         display: "grid",
         justifyContent: "center",
+        minHeight: "70vh",
         paddingTop: 15,
       }}
     >
@@ -74,14 +77,7 @@ export default function Home() {
           marginBottom: "20px",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "start",
-            marginRight: "20px",
-          }}
-        >
+        <Box mr={5}>
           <Typography variant="h5" fontWeight="light" textAlign="start">
             Förnamn
           </Typography>
@@ -96,7 +92,6 @@ export default function Home() {
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
           }}
         >
           <Typography variant="h5" fontWeight="light" textAlign="start">
@@ -113,41 +108,52 @@ export default function Home() {
       <Typography variant="h3" fontWeight="light" textAlign="start">
         Bokade kurser:
       </Typography>
-      {
-        courses.length != 0 ? (
-          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-        {courses?.map(({course}, i) => (
-          <ListItem key={course.courseId} alignItems="center" justifyContent="center">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src={course.imageSrc} />
-            </ListItemAvatar>
-            <ListItemText
-              primary={course.subject}
-              secondary={
-                <>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                    marginRight="20px"
-                  >
-                    {"Från: " + new Date(course.startDate).toLocaleDateString() + " till: " + new Date(course.endDate).toLocaleDateString()}
-                  </Typography>
-                </>
-              }
-            />
-            <Button variant="contained" color="error" >Avboka</Button>
-          </ListItem>
-        ))}
-      </List>
-        ) : (
-          <Typography variant="h5" fontWeight="light" textAlign="start" marginTop="20px"> 
-            Du har inga bokade kurser
-          </Typography>
-        )
-      }
-      
+      {courses.length != 0 ? (
+        <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+          {courses?.map(({ course }, i) => (
+            <ListItem
+              key={course.courseId}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <ListItemAvatar>
+                <Avatar alt="Remy Sharp" src={course.imageSrc} />
+              </ListItemAvatar>
+              <ListItemText
+                primary={course.subject}
+                secondary={
+                  <>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                      marginRight="20px"
+                    >
+                      {"Från: " +
+                        new Date(course.startDate).toLocaleDateString() +
+                        " till: " +
+                        new Date(course.endDate).toLocaleDateString()}
+                    </Typography>
+                  </>
+                }
+              />
+              <Button variant="contained" color="error">
+                Avboka
+              </Button>
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <Typography
+          variant="h5"
+          fontWeight="light"
+          textAlign="start"
+          marginTop="20px"
+        >
+          Du har inga bokade kurser
+        </Typography>
+      )}
     </Container>
   );
 }
