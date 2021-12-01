@@ -10,6 +10,11 @@ export default function Layout({ children }) {
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
+        backgroundImage: `url("/wallpaper.jpg")`,
+        height: "100%",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover"
       }}
     >
       <Navbar />
