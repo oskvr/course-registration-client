@@ -114,6 +114,7 @@ export default function Index() {
               <Divider sx={{ flex: "1" }} />
             </Box>
             <GoogleLogin
+              theme="dark"
               clientId={process.env.NEXT_PUBLIC_GOOGLE_ID}
               buttonText="Login"
               onSuccess={handleSuccess}

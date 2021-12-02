@@ -164,8 +164,9 @@ export default function SignUp() {
               <Divider sx={{ flex: "1" }} />
             </Box>
             <GoogleLogin
+              theme="dark"
               clientId={process.env.NEXT_PUBLIC_GOOGLE_ID}
-              buttonText="Fortsätt med Google"
+              buttonText="Registrera med Google"
               onSuccess={handleGoogleSuccess}
               onFailure={handleGoogleFail}
               cookiePolicy={"single_host_origin"}

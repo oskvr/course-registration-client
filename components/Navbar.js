@@ -1,9 +1,9 @@
-import School from "@mui/icons-material/School";
-import MenuIcon from "@mui/icons-material/Menu";
+import { useAuth } from "@/lib/auth";
 import CloseIcon from "@mui/icons-material/Close";
+import MenuIcon from "@mui/icons-material/Menu";
+import School from "@mui/icons-material/School";
 import {
   Button,
-  Drawer,
   Fade,
   List,
   ListItem,
@@ -11,17 +11,16 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
+import { deepPurple } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
-import { deepPurple } from "@mui/material/colors";
 import { useRouter } from "next/dist/client/router";
-import Link from "./Link";
 import NextLink from "next/link";
-import { useAuth } from "@/lib/auth";
 import { useState } from "react";
+import Link from "./Link";
 
 export default function Navbar() {
   const { isMobile } = useNavbar();
@@ -91,7 +90,12 @@ function MobileNavbar() {
   }
   return (
     <>
-      <AppBar variant="outlined" position="relative" sx={{ border: "none" }}>
+      <AppBar
+        variant="outlined"
+        color="transparent"
+        position="relative"
+        sx={{ border: "none" }}
+      >
         <Toolbar>
           <SiteLogo />
           <Box flex="1" />
@@ -163,11 +167,11 @@ function NavLink({ href, children }) {
       color="inherit"
       sx={{
         display: "inline-block",
-        opacity: router.pathname === pathname ? 1 : 0.8,
+        color: router.pathname === pathname ? "text.primary" : "text.secondary",
         height: "100%",
         paddingX: "1rem",
         "&:hover": {
-          opacity: 1,
+          color: "text.primary",
         },
       }}
     >

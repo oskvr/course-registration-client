@@ -8,7 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
+import { borderColor, Box } from "@mui/system";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
@@ -40,19 +40,16 @@ async function postRegistration(data, router) {
       },
       body: JSON.stringify(data),
     });
-    if(response.status == 200){
+    if (response.status == 200) {
       console.log("status: ", response.status);
       localStorage.setItem("token", response.headers.get("NewToken"));
       router.push("/courses/confirmation?status=" + response.status);
-    }
-    else if (response.status == 403) {
+    } else if (response.status == 403) {
       console.log("status: ", response.status);
       router.push("/account/login");
-    }
-    else{
+    } else {
       router.push("/courses/confirmation");
     }
-       
   } catch (epicFail) {
     console.log("error!", epicFail.message);
   }
@@ -87,13 +84,20 @@ export default function Courses() {
       <Grid container p={4} gap={3} justifyContent="center">
         {courses.map((course, i) => (
           <Grid item xs={12} md={4} xl={2} key={course.courseId}>
-            <Card sx={{ boxShadow: "0 0 0 1px hsla(220, 70%, 70%, 0.3)" }}>
+            <Card
+              elevation={1}
+              sx={{
+                // boxShadow: "0 0 0 1px hsla(220, 70%, 70%, 0.2)",
+                border: "1px solid",
+                borderColor: "divider",
+              }}
+            >
               <CardHeader
                 avatar={<Avatar src={course.imageSrc}></Avatar>}
                 title={course.subject}
                 titleTypographyProps={{ fontSize: 18 }}
                 subheader={"Studietakt: " + course.studyPace + "%"}
-                sx={{ bgcolor: "rgba(0,0,80,0.02)" }}
+                sx={{ bgcolor: "background.paperLight" }}
               />
               <CardContent>
                 <Box mb={2}>
@@ -111,8 +115,9 @@ export default function Courses() {
                 <Box>
                   <Typography>Lediga platser:</Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {course.availableSpots - course.registeredStudents === 0?
-                    "Fullbokad" : course.availableSpots - course.registeredStudents}
+                    {course.availableSpots - course.registeredStudents === 0
+                      ? "Fullbokad"
+                      : course.availableSpots - course.registeredStudents}
                   </Typography>
                 </Box>
               </CardContent>
