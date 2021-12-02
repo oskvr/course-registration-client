@@ -1,18 +1,16 @@
-import Mock from "../../mock/mockCourses.json";
-import React, { useEffect, useState } from "react";
+import { BASE_URL } from "@/lib/api/helpers";
+import { useAuth } from "@/lib/auth";
+import { Button, Container, Grid } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
 import Collapse from "@mui/material/Collapse";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import { Button, Container, Grid } from "@mui/material";
 import { Box } from "@mui/system";
-import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
-import { BASE_URL } from "@/lib/api/helpers";
+import React, { useEffect, useState } from "react";
 
 async function getCourses() {
   let data;
@@ -82,14 +80,13 @@ export default function Courses() {
       <Grid container p={4} gap={3} justifyContent="center">
         {courses.map((course, i) => (
           <Grid item xs={12} md={4} xl={2} key={course.courseId}>
-            <Card
-              sx={{ p: 1, boxShadow: "0 0 0 1px hsla(220, 70%, 70%, 0.3)" }}
-            >
+            <Card sx={{ boxShadow: "0 0 0 1px hsla(220, 70%, 70%, 0.3)" }}>
               <CardHeader
                 avatar={<Avatar src={course.imageSrc}></Avatar>}
                 title={course.subject}
                 titleTypographyProps={{ fontSize: 18 }}
                 subheader={"Studietakt: " + course.studyPace + "%"}
+                sx={{ bgcolor: "rgba(0,0,80,0.02)" }}
               />
               <CardContent>
                 <Box mb={2}>
@@ -105,21 +102,24 @@ export default function Courses() {
                   </Typography>
                 </Box>
               </CardContent>
-              <CardActions disableSpacing>
+              <CardActions
+                sx={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <Button
+                  onClick={() => handleExpandClick(i)}
+                  aria-expanded={expandedId === i}
+                >
+                  Visa mer
+                </Button>
                 <Button
                   onClick={() =>
                     handleRegistration(-1, course.courseId, router)
                   } //värdet för userId behövs inte,
                   // utan går att extrahera från token i api:et.
                   variant="contained"
+                  color="success"
                 >
                   Boka
-                </Button>
-                <Button
-                  onClick={() => handleExpandClick(i)}
-                  aria-expanded={expandedId === i}
-                >
-                  Visa mer
                 </Button>
               </CardActions>
               <Collapse in={expandedId === i} timeout="auto" unmountOnExit>

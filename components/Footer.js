@@ -12,8 +12,7 @@ export default function Footer() {
       component="footer"
       px={{ xs: 3, sm: 10 }}
       py={{ xs: 3, sm: 5 }}
-      color="white"
-      marginTop="75px"
+      // marginTop="75px"
     >
       <Container maxWidth="lg">
         <Grid justifyContent="start" container spacing={5}>
@@ -56,7 +55,7 @@ export default function Footer() {
             </Box>
           </Grid>
         </Grid>
-        <Box textAlign="center" pt={{ xs: 5, sm: 10 }} pb={{ xs: 5, sm: 0 }}>
+        <Box textAlign="center" pt={{ xs: 5, sm: 7 }} pb={{ xs: 5, sm: 0 }}>
           Superhäftiga Skolan &reg; 2021
         </Box>
       </Container>

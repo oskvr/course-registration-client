@@ -1,7 +1,6 @@
-import { Container } from "@mui/material";
-import { Box } from "@mui/system";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { Box } from "@mui/system";
 
 export default function Layout({ children }) {
   return (
@@ -10,11 +9,11 @@ export default function Layout({ children }) {
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
-        backgroundImage: `url("/wallpaper.jpg")`,
-        height: "100%",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover"
+        // backgroundImage: `url("/wallpaper.jpg")`,
+        // height: "100%",
+        // backgroundPosition: "center",
+        // backgroundRepeat: "no-repeat",
+        // backgroundSize: "cover"
       }}
     >
       <Navbar />

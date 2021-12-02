@@ -118,13 +118,12 @@ function MobileNavbar() {
           left: "0",
           height: "95vh",
           width: "100%",
-          background: "white",
           zIndex: "9999",
           display: { md: "none" },
         }}
         in={showMenu}
       >
-        <Box backgroundColor="white">
+        <Box bgcolor="background.paper">
           <List>
             <ListLink href="/" text="Hem" />
             <ListLink href="/courses" text="Kurser" />
@@ -198,7 +197,7 @@ function SiteLogo() {
         display={{ xs: "none", sm: "inline" }}
         variant="inherit"
       >
-        Superhäftig skola
+        Superhäftig Skola
       </Typography>
       <Box
         className="icon"
