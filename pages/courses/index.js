@@ -40,12 +40,19 @@ async function postRegistration(data, router) {
       },
       body: JSON.stringify(data),
     });
-    if (response.status == 403) {
+    if(response.status == 200){
       console.log("status: ", response.status);
-
+      localStorage.setItem("token", response.headers.get("NewToken"));
+      router.push("/courses/confirmation?status=" + response.status);
+    }
+    else if (response.status == 403) {
+      console.log("status: ", response.status);
       router.push("/account/login");
     }
-    localStorage.setItem("token", response.headers.get("NewToken"));
+    else{
+      router.push("/courses/confirmation");
+    }
+       
   } catch (epicFail) {
     console.log("error!", epicFail.message);
   }
@@ -95,10 +102,17 @@ export default function Courses() {
                     {new Date(course.startDate).toLocaleDateString("sv-SE")}
                   </Typography>
                 </Box>
-                <Box>
+                <Box mb={2}>
                   <Typography>Slutdatum:</Typography>
                   <Typography variant="body2" color="text.secondary">
                     {new Date(course.endDate).toLocaleDateString("sv-SE")}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography>Lediga platser:</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {course.availableSpots - course.registeredStudents === 0?
+                    "Fullbokad" : course.availableSpots - course.registeredStudents}
                   </Typography>
                 </Box>
               </CardContent>
