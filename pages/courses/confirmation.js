@@ -9,7 +9,7 @@ export default function Confirmation() {
 
     const { query } = useRouter();
 
-    console.log(query.status);
+    console.log("confirmation, query.status: ", query.status);
 
     return (
       <>
@@ -18,7 +18,7 @@ export default function Confirmation() {
         >
           <Container maxWidth="md" sx={{ color: "white" }}>
             <Stack maxWidth="35rem" py={25} spacing={3}>
-              { query.status === 200 ? (
+              { query.status == 200 ? (
                   <>
                     <Box>
                       <Typography variant="h1" fontSize={50} fontWeight="bold">

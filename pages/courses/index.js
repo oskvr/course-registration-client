@@ -43,6 +43,7 @@ async function postRegistration(data, router) {
     if (response.status == 200) {
       console.log("status: ", response.status);
       localStorage.setItem("token", response.headers.get("NewToken"));
+      console.log("response status: ", response.status)
       router.push("/courses/confirmation?status=" + response.status);
     } else if (response.status == 403) {
       console.log("status: ", response.status);
