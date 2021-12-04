@@ -1,5 +1,5 @@
 import Link from "@/components/Link";
-import { useAuth } from "@/lib/auth";
+import { useAuth } from "@/lib/hooks/use-auth";
 import { Container, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Box } from "@mui/system";

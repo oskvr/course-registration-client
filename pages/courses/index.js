@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/lib/api/helpers";
-import { useAuth } from "@/lib/auth";
+import { useAuth } from "@/lib/hooks/use-auth";
 import { Button, Container, Grid } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
@@ -43,7 +43,7 @@ async function postRegistration(data, router) {
     if (response.status == 200) {
       console.log("status: ", response.status);
       localStorage.setItem("token", response.headers.get("NewToken"));
-      console.log("response status: ", response.status)
+      console.log("response status: ", response.status);
       router.push("/courses/confirmation?status=" + response.status);
     } else if (response.status == 403) {
       console.log("status: ", response.status);

@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { GoogleLogin } from "react-google-login";
@@ -12,7 +11,8 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "@/lib/api/helpers";
 import { Divider } from "@mui/material";
 import { useRouter } from "next/router";
-import { useAuth } from "@/lib/auth";
+import { useAuth } from "@/lib/hooks/use-auth";
+import Link from "@/components/Link";
 export default function SignUp() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -143,9 +143,9 @@ export default function SignUp() {
           >
             Registrera
           </Button>
-          <Grid container justifyContent="flex-end">
+          <Grid container>
             <Grid item>
-              <Link href="/login" variant="body2">
+              <Link href="/account/login" variant="body2">
                 Har du redan ett konto? Logga in
               </Link>
             </Grid>

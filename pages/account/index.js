@@ -15,11 +15,10 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import { useAuth } from "@/lib/auth";
+import { useAuth } from "@/lib/hooks/use-auth";
 import { useRouter } from "next/router";
 import { BASE_URL } from "@/lib/api/helpers";
-async function deleteRegistration(data)
-{
+async function deleteRegistration(data) {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(`${BASE_URL}/User/UnRegisterCourse`, {
@@ -31,25 +30,22 @@ async function deleteRegistration(data)
       },
       body: JSON.stringify(data),
     });
-    if(!response.Ok)
-    {
+    if (!response.Ok) {
       console.log("status: ", response.status);
-      
     }
-    
+
     localStorage.setItem("token", response.headers.get("NewToken"));
     location.reload();
-
   } catch (epicFail) {
     console.log("error!", epicFail.message);
   }
 }
 
 const handleUnRegistration = (courseId) => {
-  let data = {"UserId": -1, "courseId": courseId}
-  console.log("data in handle: ", data)
+  let data = { UserId: -1, courseId: courseId };
+  console.log("data in handle: ", data);
   deleteRegistration(data);
-}
+};
 export default function Home() {
   const { user } = useAuth();
   const router = useRouter();
@@ -170,13 +166,13 @@ export default function Home() {
                   </>
                 }
               />
-               <Button 
-               variant="contained" 
-               color="error" 
-               onClick={() => handleUnRegistration(course.courseId)}
-               >
-                 Avboka
-                 </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => handleUnRegistration(course.courseId)}
+              >
+                Avboka
+              </Button>
             </ListItem>
           ))}
         </List>

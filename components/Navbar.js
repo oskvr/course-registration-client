@@ -1,4 +1,5 @@
-import { useAuth } from "@/lib/auth";
+import { useAuth } from "@/lib/hooks/use-auth";
+import { useSnackbar } from "@/lib/hooks/use-snackbar";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import School from "@mui/icons-material/School";
@@ -28,11 +29,14 @@ export default function Navbar() {
 }
 function useNavbar() {
   const { onLogout, isLoggedIn, user } = useAuth();
+  const { addAlert } = useSnackbar();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
+
   const router = useRouter();
   function handleLogout() {
     onLogout();
     router.push("/");
+    addAlert("Du loggades ut");
   }
 
   return { handleLogout, isLoggedIn, isMobile, user };
@@ -168,6 +172,7 @@ function NavLink({ href, children }) {
       sx={{
         display: "inline-block",
         color: router.pathname === pathname ? "text.primary" : "text.secondary",
+        fontWeight: router.pathname === pathname ? "500" : "inherit",
         height: "100%",
         paddingX: "1rem",
         "&:hover": {

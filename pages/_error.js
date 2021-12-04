@@ -1,9 +1,11 @@
 import Link from "@/components/Link";
 import { Button, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { useRouter } from "next/router";
 import React from "react";
 
 export default function Error() {
+  const router = useRouter();
   return (
     <Box
       display="grid"
@@ -24,9 +26,14 @@ export default function Error() {
         >
           Sidan du sökte kunde inte hittas
         </Typography>
-        <Button component={Link} href="/" variant="contained">
-          Gå tillbaka till startsidan
-        </Button>
+        <Stack spacing={2}>
+          <Button onClick={() => router.back()} variant="contained">
+            Gå tillbaka
+          </Button>
+          <Button component={Link} href="/" variant="outlined">
+            Gå till startsidan
+          </Button>
+        </Stack>
       </Stack>
     </Box>
   );

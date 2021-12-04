@@ -3,7 +3,8 @@ import Head from "next/head";
 import "../styles/globals.css";
 import { theme } from "./_theme";
 import Layout from "./_layout";
-import { AuthProvider } from "@/lib/auth";
+import { AuthProvider } from "@/lib/hooks/use-auth";
+import { SnackbarProvider } from "@/lib/hooks/use-snackbar";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -13,14 +14,16 @@ function MyApp({ Component, pageProps }) {
         <title>Course Registration App</title>
       </Head>
 
-      <AuthProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
-      </AuthProvider>
+      <ThemeProvider theme={theme}>
+        <SnackbarProvider>
+          <AuthProvider>
+            <CssBaseline />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </AuthProvider>
+        </SnackbarProvider>
+      </ThemeProvider>
     </>
   );
 }

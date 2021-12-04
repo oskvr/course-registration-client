@@ -9,16 +9,18 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/lib/auth";
+import { useAuth } from "@/lib/hooks/use-auth";
 import { useRouter } from "next/router";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Link from "@/components/Link";
 import GoogleLogin from "react-google-login";
+import { useSnackbar } from "@/lib/hooks/use-snackbar";
 
 export default function Index() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { onLogin, onGoogleLogin, redirect, isLoggedIn } = useAuth();
+  const { addAlert } = useSnackbar();
   const router = useRouter();
   useEffect(() => {
     // Login-sidan behöver inte visas om man redan är inloggad
@@ -36,6 +38,7 @@ export default function Index() {
     event.preventDefault();
     await onLogin(email, password);
     router.push(redirect);
+    addAlert("Du loggades in");
   };
   const handleFailure = (response) => {
     console.log("google-respons", response);
@@ -96,7 +99,7 @@ export default function Index() {
           <Grid container>
             <Grid item>
               <Link href="/account/register" variant="body2">
-                {"Har du inget konto? Registrera"}
+                Har du inget konto? Registrera
               </Link>
             </Grid>
           </Grid>

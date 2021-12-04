@@ -1,5 +1,5 @@
 import Link from "@/components/Link";
-import { useAuth } from "@/lib/auth";
+import { useAuth } from "@/lib/hooks/use-auth";
 import { Button, Container, Stack, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { deepPurple, grey } from "@mui/material/colors";
