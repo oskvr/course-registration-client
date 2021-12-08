@@ -1,24 +1,18 @@
-import {
-  Button,
-  Container,
-  Grid,
-  ListItemSecondaryAction,
-  Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import Image from "next/image";
-import Link from "@/components/Link";
-import { useEffect, useState } from "react";
+import { BASE_URL, fetcher } from "@/lib/api/helpers";
+import { useAuth } from "@/lib/hooks/use-auth";
+import { useSnackbar } from "@/lib/hooks/use-snackbar";
+import Drafts from "@mui/icons-material/Drafts";
+import { Button, Container, Divider, Paper, Typography } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import { useAuth } from "@/lib/hooks/use-auth";
+import ListItemText from "@mui/material/ListItemText";
+import { Box } from "@mui/system";
 import { useRouter } from "next/router";
-import { BASE_URL } from "@/lib/api/helpers";
-async function deleteRegistration(data) {
+import useSWR from "swr";
+
+async function unregisterAsync(courseId) {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(`${BASE_URL}/User/UnRegisterCourse`, {
@@ -28,164 +22,191 @@ async function deleteRegistration(data) {
         "content-type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ courseId, userId: -1 }),
     });
-    if (!response.Ok) {
-      console.log("status: ", response.status);
-    }
-
     localStorage.setItem("token", response.headers.get("NewToken"));
-    location.reload();
+    return response;
   } catch (epicFail) {
     console.log("error!", epicFail.message);
   }
 }
 
-const handleUnRegistration = (courseId) => {
-  let data = { UserId: -1, courseId: courseId };
-  console.log("data in handle: ", data);
-  deleteRegistration(data);
-};
 export default function Home() {
   const { user } = useAuth();
   const router = useRouter();
+  const { addAlert } = useSnackbar();
+  const { data: courses, mutate } = useSWR(`/User/CoursesForUser`, fetcher);
 
-  useEffect(() => {
-    if (!user) {
-      router.push("/account/login");
+  async function handleCourseUnregistration(course) {
+    const res = await unregisterAsync(course.courseId);
+    if (res.ok) {
+      mutate();
+      addAlert(`Du avbokades från "${course.subject}"`, {
+        severity: "success",
+      });
+    } else {
+      addAlert("Någonting gick fel", { severity: "error" });
     }
-  }, [user, router]);
-
-  const [courses, setCourses] = useState([]);
-
-  useEffect(() => {
-    getCourses().then(setCourses);
-  }, []);
-
-  async function getCourses() {
-    console.log(localStorage.getItem("token"));
-
-    const response = await fetch(
-      "https://localhost:44314/api/User/CoursesForUser",
-      {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
-
-    return await response.json();
   }
   if (!user) return null;
+
   return (
     <Container
       sx={{
         display: "grid",
-        justifyContent: "center",
         minHeight: "70vh",
         paddingTop: 15,
       }}
     >
-      <Typography
-        variant="h3"
-        fontWeight="light"
-        textAlign="start"
-        marginBottom="20px"
-      >
-        Personuppgifter:
-      </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "start",
-          marginBottom: "20px",
-        }}
-      >
-        <Box mr={5}>
-          <Typography variant="h5" fontWeight="light" textAlign="start">
-            Förnamn
+      <Box>
+        <Box>
+          <Typography
+            variant="h3"
+            fontSize={35}
+            textAlign="start"
+            marginBottom="20px"
+            color="primary.main"
+          >
+            Personuppgifter
           </Typography>
-          <Typography variant="h5" fontWeight="light" textAlign="start">
-            Efternamn
-          </Typography>
-          <Typography variant="h5" fontWeight="light" textAlign="start">
-            Email
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "start",
+              marginBottom: "20px",
+            }}
+          >
+            <Box mr={5}>
+              <Typography variant="h6" fontWeight="bold" textAlign="right">
+                Förnamn
+              </Typography>
+              <Typography variant="h6" fontWeight="bold" textAlign="right">
+                Efternamn
+              </Typography>
+              <Typography variant="h6" fontWeight="bold" textAlign="right">
+                Email
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Typography variant="h6" fontWeight="light" textAlign="start">
+                {user.firstName}
+              </Typography>
+              <Typography variant="h6" fontWeight="light" textAlign="start">
+                {user.lastName}
+              </Typography>
+              <Typography variant="h6" fontWeight="light" textAlign="start">
+                {user.email}
+              </Typography>
+            </Box>
+          </Box>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Typography variant="h5" fontWeight="light" textAlign="start">
-            {user.firstName}
+        <Divider sx={{ marginY: 5 }} />
+        <Box>
+          <Typography
+            variant="h3"
+            fontSize={35}
+            textAlign="start"
+            marginBottom="20px"
+            color="primary.main"
+          >
+            Bokade kurser ({courses?.length})
           </Typography>
-          <Typography variant="h5" fontWeight="light" textAlign="start">
-            {user.lastName}
-          </Typography>
-          <Typography variant="h5" fontWeight="light" textAlign="start">
-            {user.email}
-          </Typography>
-        </Box>
-      </Box>
-      <Typography variant="h3" fontWeight="light" textAlign="start">
-        Bokade kurser:
-      </Typography>
-      {courses.length != 0 ? (
-        <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-          {courses?.map(({ course }, i) => (
-            <ListItem
-              key={course.courseId}
+          {courses?.length > 0 ? (
+            <List
+              sx={{
+                width: "100%",
+              }}
+            >
+              {courses?.map(({ course }, i) => (
+                <ListItem
+                  key={course.courseId}
+                  alignItems="center"
+                  justifyContent="center"
+                  // --------------------
+                  //cool hover-effekt 💩💩💩
+                  sx={{
+                    position: "relative",
+                    ":after": {
+                      content: "''",
+                      position: "absolute",
+                      left: 0,
+                      opacity: 0,
+                      width: "2px",
+                      height: "100%",
+                      bgcolor: "primary.light",
+                      transition: "0.2s",
+                      transform: "scaley(0.3)",
+                    },
+                    ":hover": {
+                      ":after": {
+                        opacity: 1,
+                        transform: "scaley(0.7)",
+                      },
+                    },
+                  }}
+                >
+                  <ListItemAvatar>
+                    <Avatar alt="Remy Sharp" src={course.imageSrc} />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={course.subject}
+                    secondary={
+                      <>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                          marginRight="20px"
+                        >
+                          {"Från: " +
+                            new Date(course.startDate).toLocaleDateString() +
+                            " till: " +
+                            new Date(course.endDate).toLocaleDateString()}
+                        </Typography>
+                      </>
+                    }
+                  />
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => handleCourseUnregistration(course)}
+                  >
+                    Avboka
+                  </Button>
+                </ListItem>
+              ))}
+            </List>
+          ) : (
+            <Box
+              minHeight="250px"
+              display="grid"
               alignItems="center"
               justifyContent="center"
             >
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src={course.imageSrc} />
-              </ListItemAvatar>
-              <ListItemText
-                primary={course.subject}
-                secondary={
-                  <>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                      marginRight="20px"
-                    >
-                      {"Från: " +
-                        new Date(course.startDate).toLocaleDateString() +
-                        " till: " +
-                        new Date(course.endDate).toLocaleDateString()}
-                    </Typography>
-                  </>
-                }
-              />
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => handleUnRegistration(course.courseId)}
-              >
-                Avboka
-              </Button>
-            </ListItem>
-          ))}
-        </List>
-      ) : (
-        <Typography
-          variant="h5"
-          fontWeight="light"
-          textAlign="start"
-          marginTop="20px"
-        >
-          Du har inga bokade kurser
-        </Typography>
-      )}
+              <Box textAlign="center">
+                <Typography
+                  variant="h5"
+                  fontWeight="light"
+                  textAlign="start"
+                  marginY={3}
+                >
+                  Du har inga bokade kurser
+                </Typography>
+                <Drafts
+                  sx={{ fontSize: 60, color: "text.secondary", opacity: 0.4 }}
+                />
+              </Box>
+            </Box>
+          )}
+        </Box>
+      </Box>
     </Container>
   );
 }

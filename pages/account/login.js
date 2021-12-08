@@ -38,7 +38,7 @@ export default function Index() {
     event.preventDefault();
     await onLogin(email, password);
     router.push(redirect);
-    addAlert("Du loggades in");
+    addAlert("Välkommen tillbaka");
   };
   const handleFailure = (response) => {
     console.log("google-respons", response);

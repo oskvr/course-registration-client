@@ -1,6 +1,6 @@
 import Link from "@/components/Link";
 import { useAuth } from "@/lib/hooks/use-auth";
-import { Button, Container, Stack, Typography } from "@mui/material";
+import { Button, Container, Rating, Stack, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { deepPurple, grey } from "@mui/material/colors";
 import { Box } from "@mui/system";
@@ -85,9 +85,9 @@ export default function Home() {
             >
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut
               nunc nunc. In augue quam, fermentum eu metus eu, gravida molestie
-              risus. Aenean pellentesque lacinia tellus, in laoreet metus varius
-              id.
+              risus.
             </Typography>
+            <Rating name="read-only" value={1} readOnly />
             <Typography color="text.secondary">- Sven Svensson</Typography>
           </Stack>
         </Stack>

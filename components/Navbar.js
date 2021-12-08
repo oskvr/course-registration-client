@@ -96,6 +96,7 @@ function MobileNavbar() {
     <>
       <AppBar
         variant="outlined"
+        elevation={0}
         color="transparent"
         position="relative"
         sx={{ border: "none" }}

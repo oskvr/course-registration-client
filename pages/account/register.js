@@ -13,7 +13,9 @@ import { Divider } from "@mui/material";
 import { useRouter } from "next/router";
 import { useAuth } from "@/lib/hooks/use-auth";
 import Link from "@/components/Link";
+import { useSnackbar } from "@/lib/hooks/use-snackbar";
 export default function SignUp() {
+  const { addAlert } = useSnackbar();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,6 +33,7 @@ export default function SignUp() {
     const res = await registerUserAsync(firstName, lastName, email, password);
     if (res.ok) {
       router.push("/account/login");
+      addAlert("Registreringen lyckades. Logga in med ditt nya konto.");
     }
   }
   async function registerUserAsync(firstName, lastName, email, password) {
@@ -48,6 +51,10 @@ export default function SignUp() {
       },
       body: JSON.stringify(userBody),
     });
+    const data = await res.json();
+    if (!res.ok) {
+      addAlert(data.message, { severity: "error" });
+    }
     return res;
   }
   async function handleGoogleSuccess(googleResponse) {
@@ -82,7 +89,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Skapa nytt konto
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
