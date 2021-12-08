@@ -32,14 +32,20 @@ export default function Index() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
-  const handleGoogleSuccess = (response) => {
-    onGoogleLogin(response);
+  const handleGoogleSuccess = async (response) => {
+    const res = await onGoogleLogin(response);
+    if (res.ok) {
+      router.push("/");
+      addAlert("Du loggades in");
+    } else {
+      addAlert("Något gick fel", { severity: "error" });
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     await onLogin(email, password);
-    router.push(redirect);
+    router.push("/");
     addAlert("Du loggades in");
   };
   const handleGoogleFailure = (response) => {

@@ -37,6 +37,11 @@ export default function SignUp() {
     if (res.ok) {
       router.push("/account/login");
       addAlert("Registreringen lyckades. Logga in med ditt nya konto.");
+    } else {
+      addAlert(
+        "Något gick fel med registreringen, testa en annan mail-adress",
+        { severity: "error" }
+      );
     }
   }
   async function handleGoogleSuccess(googleResponse) {
