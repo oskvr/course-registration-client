@@ -1,46 +1,22 @@
-import { BASE_URL, fetcher } from "@/lib/api/helpers";
-import { useAuth } from "@/lib/hooks/use-auth";
 import { useSnackbar } from "@/lib/hooks/use-snackbar";
+import { useUser } from "@/lib/hooks/use-user";
 import Drafts from "@mui/icons-material/Drafts";
-import { Button, Container, Divider, Paper, Typography } from "@mui/material";
+import { Button, Container, Divider, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import { Box } from "@mui/system";
-import { useRouter } from "next/router";
-import useSWR from "swr";
-
-async function unregisterAsync(courseId) {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${BASE_URL}/User/UnRegisterCourse`, {
-      method: "DELETE",
-      mode: "cors",
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ courseId, userId: -1 }),
-    });
-    localStorage.setItem("token", response.headers.get("NewToken"));
-    return response;
-  } catch (epicFail) {
-    console.log("error!", epicFail.message);
-  }
-}
 
 export default function Home() {
-  const { user } = useAuth();
-  const router = useRouter();
   const { addAlert } = useSnackbar();
-  const { data: courses, mutate } = useSWR(`/User/CoursesForUser`, fetcher);
+  const { registeredCourses, unregisterFromCourseAsync, user, isLoggedIn } =
+    useUser();
 
   async function handleCourseUnregistration(course) {
-    const res = await unregisterAsync(course.courseId);
+    const res = await unregisterFromCourseAsync(course.courseId);
     if (res.ok) {
-      mutate();
       addAlert(`Du avbokades från "${course.subject}"`, {
         severity: "success",
       });
@@ -48,8 +24,8 @@ export default function Home() {
       addAlert("Någonting gick fel", { severity: "error" });
     }
   }
-  if (!user) return null;
 
+  if (!isLoggedIn) return null;
   return (
     <Container
       sx={{
@@ -115,19 +91,17 @@ export default function Home() {
             marginBottom="20px"
             color="primary.main"
           >
-            Bokade kurser ({courses?.length})
+            Bokade kurser ({registeredCourses?.length})
           </Typography>
-          {courses?.length > 0 ? (
+          {registeredCourses.length ? (
             <List
               sx={{
                 width: "100%",
               }}
             >
-              {courses?.map(({ course }, i) => (
+              {registeredCourses?.map(({ course }, i) => (
                 <ListItem
                   key={course.courseId}
-                  alignItems="center"
-                  justifyContent="center"
                   // --------------------
                   //cool hover-effekt 💩💩💩
                   sx={{
@@ -139,14 +113,15 @@ export default function Home() {
                       opacity: 0,
                       width: "2px",
                       height: "100%",
-                      bgcolor: "primary.light",
+                      bgcolor: "primary.dark",
                       transition: "0.2s",
-                      transform: "scaley(0.3)",
+                      transform: "scaleY(0.7)",
                     },
                     ":hover": {
+                      background: "rgba(0,0,0,0.04)",
                       ":after": {
                         opacity: 1,
-                        transform: "scaley(0.7)",
+                        transform: "scaleY(1)",
                       },
                     },
                   }}
@@ -159,16 +134,16 @@ export default function Home() {
                     secondary={
                       <>
                         <Typography
-                          sx={{ display: "inline" }}
                           component="span"
                           variant="body2"
-                          color="text.primary"
+                          color="text.secondary"
                           marginRight="20px"
                         >
-                          {"Från: " +
-                            new Date(course.startDate).toLocaleDateString() +
-                            " till: " +
-                            new Date(course.endDate).toLocaleDateString()}
+                          {new Date(course.startDate).toLocaleDateString(
+                            "sv-SE"
+                          )}{" "}
+                          -{" "}
+                          {new Date(course.endDate).toLocaleDateString("sv-SE")}
                         </Typography>
                       </>
                     }

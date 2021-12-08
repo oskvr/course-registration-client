@@ -1,4 +1,8 @@
+import Link from "@/components/Link";
+import { useSnackbar } from "@/lib/hooks/use-snackbar";
+import { useUser } from "@/lib/hooks/use-user";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { Divider } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -6,28 +10,27 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { GoogleLogin } from "react-google-login";
-import { useEffect, useState } from "react";
-import { BASE_URL } from "@/lib/api/helpers";
-import { Divider } from "@mui/material";
 import { useRouter } from "next/router";
-import { useAuth } from "@/lib/hooks/use-auth";
-import Link from "@/components/Link";
-import { useSnackbar } from "@/lib/hooks/use-snackbar";
+import { useEffect, useState } from "react";
+import { GoogleLogin } from "react-google-login";
+
 export default function SignUp() {
   const { addAlert } = useSnackbar();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, registerUserAsync } = useUser();
   const router = useRouter();
+
   useEffect(() => {
+    // Register-sidan behöver inte visas om man redan är inloggad
     if (isLoggedIn) {
       router.push("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
+
   async function handleSubmit(e) {
     e.preventDefault();
     const res = await registerUserAsync(firstName, lastName, email, password);
@@ -35,27 +38,6 @@ export default function SignUp() {
       router.push("/account/login");
       addAlert("Registreringen lyckades. Logga in med ditt nya konto.");
     }
-  }
-  async function registerUserAsync(firstName, lastName, email, password) {
-    const userBody = {
-      FirstName: firstName,
-      LastName: lastName,
-      Email: email,
-      Password: password,
-    };
-
-    const res = await fetch(BASE_URL + "/user/registerUser", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(userBody),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      addAlert(data.message, { severity: "error" });
-    }
-    return res;
   }
   async function handleGoogleSuccess(googleResponse) {
     const token = googleResponse.tokenId;

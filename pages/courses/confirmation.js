@@ -1,12 +1,13 @@
 import Link from "@/components/Link";
 import { useAuth } from "@/lib/hooks/use-auth";
+import { useUser } from "@/lib/hooks/use-user";
 import Check from "@mui/icons-material/Check";
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Box } from "@mui/system";
 
 export default function Confirmation() {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useUser();
   if (!isLoggedIn) return null;
   return (
     <Container maxWidth="md" sx={{ color: "white" }}>

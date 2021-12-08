@@ -1,5 +1,6 @@
 import { useAuth } from "@/lib/hooks/use-auth";
 import { useSnackbar } from "@/lib/hooks/use-snackbar";
+import { useUser } from "@/lib/hooks/use-user";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import School from "@mui/icons-material/School";
@@ -28,7 +29,8 @@ export default function Navbar() {
   return isMobile ? <MobileNavbar /> : <DesktopNavbar />;
 }
 function useNavbar() {
-  const { onLogout, isLoggedIn, user } = useAuth();
+  const { onLogout } = useAuth();
+  const { user, isLoggedIn } = useUser();
   const { addAlert } = useSnackbar();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
@@ -42,7 +44,6 @@ function useNavbar() {
   return { handleLogout, isLoggedIn, isMobile, user };
 }
 function DesktopNavbar() {
-  // const { user } = useAuth();
   const { isLoggedIn, handleLogout, user } = useNavbar();
   return (
     <AppBar

@@ -1,6 +1,7 @@
 import { BASE_URL, fetcher } from "@/lib/api/helpers";
 import { useAuth } from "@/lib/hooks/use-auth";
 import { useSnackbar } from "@/lib/hooks/use-snackbar";
+import { useUser } from "@/lib/hooks/use-user";
 import Error from "@mui/icons-material/ErrorOutline";
 import { Button, Container, Grid } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
@@ -17,37 +18,29 @@ import useSWR from "swr";
 
 export default function Courses() {
   const [expandedId, setExpandedId] = useState(-1);
-  const { isLoggedIn } = useAuth();
+  const { token, setToken } = useAuth();
+  const { registerToCourseAsync, registeredCourses: usersCourses } = useUser();
   const { addAlert } = useSnackbar();
   const { data: courses } = useSWR("/Course", fetcher);
-  const { data: usersCourses } = useSWR(
-    isLoggedIn && "/User/CoursesForUser",
-    fetcher
-  );
-
   const router = useRouter();
+  // const { data: usersCourses } = useSWR(
+  //   isLoggedIn && ["/User/CoursesForUser", token],
+  //   fetcher
+  // );
+
   const handleExpandClick = (i) => {
     setExpandedId(expandedId === i ? -1 : i);
   };
 
-  async function postRegistration(data) {
+  const handleRegistration = async (courseId) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(BASE_URL + "/User/RegisterCourse", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await registerToCourseAsync(courseId);
       if (response.status == 200) {
-        localStorage.setItem("token", response.headers.get("NewToken"));
+        // setToken(response.headers.get("NewToken"));
         router.push("/courses/confirmation");
       } else if (response.status == 403) {
         router.push("/account/login");
-        addAlert("Du måste vara inloggad för att boka en kurs", {
+        addAlert("Du måste vara inloggad för att kunna boka en kurs", {
           severity: "error",
         });
       } else {
@@ -58,17 +51,10 @@ export default function Courses() {
     } catch (epicFail) {
       console.log("error!", epicFail.message);
     }
-  }
-  const handleRegistration = (courseId) => {
-    let data = {
-      userId: -1,
-      courseId,
-    };
-    postRegistration(data, router);
   };
 
   function isRegistered(course) {
-    if (usersCourses) {
+    if (usersCourses?.length) {
       return (
         usersCourses?.filter((c) => c.course.courseId === course.courseId)
           .length > 0
@@ -174,7 +160,7 @@ function CourseCard({
       </CardContent>
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
         <Button onClick={onExpand} aria-expanded={isExpanded}>
-          Visa mer
+          {isExpanded ? "Visa mindre" : "Visa mer"}
         </Button>
         {isRegistered(course) ? (
           <Button disabled variant="contained" color="success">

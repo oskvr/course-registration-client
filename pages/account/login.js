@@ -15,11 +15,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Link from "@/components/Link";
 import GoogleLogin from "react-google-login";
 import { useSnackbar } from "@/lib/hooks/use-snackbar";
+import { useUser } from "@/lib/hooks/use-user";
 
 export default function Index() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { onLogin, onGoogleLogin, redirect, isLoggedIn } = useAuth();
+  const { onLogin, onGoogleLogin, redirect } = useAuth();
+  const { isLoggedIn, user } = useUser();
   const { addAlert } = useSnackbar();
   const router = useRouter();
   useEffect(() => {
@@ -30,7 +32,7 @@ export default function Index() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
-  const handleSuccess = (response) => {
+  const handleGoogleSuccess = (response) => {
     onGoogleLogin(response);
   };
 
@@ -38,9 +40,9 @@ export default function Index() {
     event.preventDefault();
     await onLogin(email, password);
     router.push(redirect);
-    addAlert("Välkommen tillbaka");
+    addAlert("Du loggades in");
   };
-  const handleFailure = (response) => {
+  const handleGoogleFailure = (response) => {
     console.log("google-respons", response);
   };
 
@@ -120,8 +122,8 @@ export default function Index() {
               theme="dark"
               clientId={process.env.NEXT_PUBLIC_GOOGLE_ID}
               buttonText="Login"
-              onSuccess={handleSuccess}
-              onFailure={handleFailure}
+              onSuccess={handleGoogleSuccess}
+              onFailure={handleGoogleFailure}
               cookiePolicy={"single_host_origin"}
             >
               <span>Logga in med google</span>

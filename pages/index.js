@@ -1,13 +1,12 @@
 import Link from "@/components/Link";
-import { useAuth } from "@/lib/hooks/use-auth";
+import { useUser } from "@/lib/hooks/use-user";
 import { Button, Container, Rating, Stack, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import { deepPurple, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import { Box } from "@mui/system";
-import Image from "next/image";
 
 export default function Home() {
-  const { user, isLoggedIn } = useAuth();
+  const { isLoggedIn } = useUser();
   return (
     <>
       <Box
@@ -30,8 +29,8 @@ export default function Home() {
               </Typography>
             </Box>
             <Typography fontSize={20} color={grey[300]}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut
-              nunc nunc. In augue quam, fermentum.
+              På Superhäftiga skolans kursportal hittar du tOpPmOdErNa kurser
+              och bokar dem enkelt med ett knapptryck
             </Typography>
             <Stack direction="row" spacing={2}>
               <Button variant="contained" component={Link} href="/courses">
@@ -93,75 +92,5 @@ export default function Home() {
         </Stack>
       </Container>
     </>
-  );
-}
-
-// Ta bort den här
-function OldHero() {
-  return (
-    <Container
-      sx={{
-        display: "grid",
-        justifyContent: "center",
-        minHeight: "70vh",
-        paddingTop: 15,
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {isLoggedIn ? (
-          <>
-            <Avatar
-              sx={{
-                fontSize: 40,
-                bgcolor: deepPurple[500],
-                height: 100,
-                width: 100,
-              }}
-            >
-              {/* {user?.firstName.charAt(0) + user?.lastName.charAt(0)} */}
-            </Avatar>
-            <Typography
-              variant="h4"
-              fontWeight="light"
-              textAlign="center"
-              margin="30px"
-            >
-              Du är inloggad som {user ? user.firstName : ""}{" "}
-              {user ? user.lastName : ""}
-            </Typography>
-            <Button
-              width="200px"
-              variant="contained"
-              component={Link}
-              href="/courses"
-            >
-              Visa kurser
-            </Button>
-          </>
-        ) : (
-          <>
-            <Typography variant="h4" fontWeight="light" textAlign="center">
-              Logga in eller registrera dig för att boka superhäftiga kurser!
-            </Typography>
-            <Image
-              src="/undraw_education.svg"
-              width="400"
-              height="400"
-              alt=""
-            />
-            <Button variant="contained" component={Link} href="/courses">
-              Visa kurser
-            </Button>
-          </>
-        )}
-      </Box>
-    </Container>
   );
 }
