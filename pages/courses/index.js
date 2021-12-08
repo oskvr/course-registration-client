@@ -36,7 +36,10 @@ export default function Courses() {
     try {
       const response = await registerToCourseAsync(courseId);
       if (response.status == 200) {
-        // setToken(response.headers.get("NewToken"));
+        // console.log("oldToken: ", token);
+        // console.log("response.token: ", response.headers.get("NewToken"))
+        setToken(response.headers.get("NewToken")); //Det fungerar på något vänster! Även om console.log inte indikerar det.
+        // console.log("newToken: ", token);
         router.push("/courses/confirmation");
       } else if (response.status == 403) {
         router.push("/account/login");

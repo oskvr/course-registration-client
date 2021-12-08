@@ -8,15 +8,20 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import { Box } from "@mui/system";
+import { useAuth } from "@/lib/hooks/use-auth";
 
 export default function Home() {
   const { addAlert } = useSnackbar();
   const { registeredCourses, unregisterFromCourseAsync, user, isLoggedIn } =
     useUser();
-
+  const { token, setToken } = useAuth();
   async function handleCourseUnregistration(course) {
     const res = await unregisterFromCourseAsync(course.courseId);
     if (res.ok) {
+      // console.log("oldToken: ", token);
+      // console.log("res.token: ", res.headers.get("NewToken"));
+      setToken(res.headers.get("NewToken")); //Det fungerar på något vänster! Även om console.log inte indikerar det.
+      // console.log("newToken: ", token);
       addAlert(`Du avbokades från "${course.subject}"`, {
         severity: "success",
       });
